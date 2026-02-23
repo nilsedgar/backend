@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        async function getProducts() {
+        const res = await fetch('http://localhost:3007/products/hello');
+        const products = await res.json();
+        console.log(products);
+        return products;
+        }   
+
+        //const allProducts = await getProducts();
+
+        getProducts().then(allProducts => {
+        allProducts.forEach(product => {
+        const card = document.createElement('div');
+        card.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>Pris: ${product.price} kr</p>
+            <p>I lager: ${product.stock_quantity}</p>
+        `;
+        document.body.appendChild(card);
+        });
+    });
+
+    </script>
+</body>
+</html>

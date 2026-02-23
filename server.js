@@ -1,27 +1,15 @@
 const express = require("express");
 const app = express();
 const PORT = 3007;
-const db = require("mysql2");
-const cn = db.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "nisse",
-    database: "webshoppen"
-});
+const cors = require('cors');
 
-app.use(express.json())
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
-app.get("/hello", (req, res) => {
-    cn.query("SELECT * FROM products", (err, data) => {res.send(data)});
-})
+app.use(cors());
+app.use(express.json());
 
-
-
-app.post("/admin/create-product", (req, res) =>  {
-    cn.query("INSERT INTO products (name, price, stock_quantity, categories_id) VALUES (?, ?, ?, ?);",
-        [req.body.name, req.body.price, req.body.stock_quantity, req.body.categories_id]
-    )
-    res.send("Klart!")
-})
+app.use('/products', productRoutes);
+app.use('/', orderRoutes);
 
 app.listen(PORT);
